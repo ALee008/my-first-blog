@@ -1,6 +1,14 @@
 from django.shortcuts import render
+from django.utils import timezone
+from .models import Post
 
 
 # Create your views here.
 def post_list(request):
-    return render(request, 'blog/post_list.html', {})
+    """
+
+    :param request: Everything we receive from the user via the internet.
+    :return:
+    """
+    posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
+    return render(request, 'blog/post_list.html', {'posts': posts})
